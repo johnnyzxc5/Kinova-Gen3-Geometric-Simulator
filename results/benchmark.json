@@ -1,0 +1,9 @@
+{
+  "matlab_version": "26.1.0.3312084 (R2026a) Update 4",
+  "states": 100,
+  "repeats": 5,
+  "stock_median_us": 956.209,
+  "optimized_median_us": 150.735,
+  "speedup": 6.3436428168640324,
+  "scope": "M and c+g+f, changing q and dq, warmed serial CPU. No rendering or integration."
+}

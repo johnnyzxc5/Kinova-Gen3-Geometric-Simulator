@@ -1,0 +1,338 @@
+{
+  "schema": "kinova-gen3-6dof-v1",
+  "robot": "GEN3-6DOF_NO-VISION_URDF_ARM_V01",
+  "urdf_revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+  "joints": [
+    {
+      "name": "joint_1",
+      "type": "continuous",
+      "parent": "base_link",
+      "child": "shoulder_link",
+      "xyz": [
+        0.0,
+        0.0,
+        0.15643
+      ],
+      "rpy": [
+        -3.1416,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 1.377,
+      "com": [
+        -2.3e-05,
+        -0.010364,
+        -0.07336
+      ],
+      "inertia_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia": [
+        0.00457,
+        1e-06,
+        2e-06,
+        0.004831,
+        0.000448,
+        0.001409
+      ],
+      "effort": 39.0,
+      "velocity": 1.3963,
+      "lower": null,
+      "upper": null
+    },
+    {
+      "name": "joint_2",
+      "type": "revolute",
+      "parent": "shoulder_link",
+      "child": "bicep_link",
+      "xyz": [
+        0.0,
+        0.005375,
+        -0.12838
+      ],
+      "rpy": [
+        1.5708,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 1.262,
+      "com": [
+        3.5e-05,
+        -0.208207,
+        -0.01889
+      ],
+      "inertia_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia": [
+        0.046752,
+        -9e-06,
+        0.0,
+        0.00085,
+        -9.8e-05,
+        0.047188
+      ],
+      "effort": 39.0,
+      "velocity": 1.3963,
+      "lower": -2.24,
+      "upper": 2.24
+    },
+    {
+      "name": "joint_3",
+      "type": "revolute",
+      "parent": "bicep_link",
+      "child": "forearm_link",
+      "xyz": [
+        0.0,
+        -0.41,
+        0.0
+      ],
+      "rpy": [
+        3.1416,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 0.93,
+      "com": [
+        1.8e-05,
+        0.076168,
+        -0.01397
+      ],
+      "inertia_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia": [
+        0.008292,
+        -1e-06,
+        0.0,
+        0.000628,
+        0.000432,
+        0.008464
+      ],
+      "effort": 39.0,
+      "velocity": 1.3963,
+      "lower": -2.57,
+      "upper": 2.57
+    },
+    {
+      "name": "joint_4",
+      "type": "continuous",
+      "parent": "forearm_link",
+      "child": "spherical_wrist_1_link",
+      "xyz": [
+        0.0,
+        0.20843,
+        -0.006375
+      ],
+      "rpy": [
+        1.5708,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 0.678,
+      "com": [
+        -1e-06,
+        0.008486,
+        -0.062937
+      ],
+      "inertia_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia": [
+        0.001645,
+        0.0,
+        0.0,
+        0.001666,
+        -0.000234,
+        0.000389
+      ],
+      "effort": 9.0,
+      "velocity": 1.2218,
+      "lower": null,
+      "upper": null
+    },
+    {
+      "name": "joint_5",
+      "type": "revolute",
+      "parent": "spherical_wrist_1_link",
+      "child": "spherical_wrist_2_link",
+      "xyz": [
+        0.0,
+        -0.00017505,
+        -0.10593
+      ],
+      "rpy": [
+        -1.5708,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 0.678,
+      "com": [
+        -1e-06,
+        0.046429,
+        -0.008704
+      ],
+      "inertia_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia": [
+        0.001685,
+        0.0,
+        0.0,
+        0.0004,
+        0.000255,
+        0.001696
+      ],
+      "effort": 9.0,
+      "velocity": 1.2218,
+      "lower": -2.09,
+      "upper": 2.09
+    },
+    {
+      "name": "joint_6",
+      "type": "continuous",
+      "parent": "spherical_wrist_2_link",
+      "child": "bracelet_link",
+      "xyz": [
+        0.0,
+        0.10593,
+        -0.00017505
+      ],
+      "rpy": [
+        1.5708,
+        0.0,
+        0.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 0.364,
+      "com": [
+        -9.3e-05,
+        0.000132,
+        -0.022905
+      ],
+      "inertia_rpy": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia": [
+        0.000214,
+        0.0,
+        1e-06,
+        0.000223,
+        -2e-06,
+        0.00024
+      ],
+      "effort": 9.0,
+      "velocity": 1.2218,
+      "lower": null,
+      "upper": null
+    },
+    {
+      "name": "end_effector",
+      "type": "fixed",
+      "parent": "bracelet_link",
+      "child": "end_effector_link",
+      "xyz": [
+        0.0,
+        0.0,
+        -0.061525
+      ],
+      "rpy": [
+        3.1416,
+        0.0,
+        -3.1416
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "actuator_proxy": {
+    "source": "Cholet 2025, Tables A.1/B.1; commercial substitutes, not identified Kinova actuators",
+    "motor_inertia": [
+      9.3e-06,
+      9.3e-06,
+      9.3e-06,
+      5.6e-06,
+      5.6e-06,
+      5.6e-06
+    ],
+    "reducer_output_inertia": [
+      7.9e-06,
+      7.9e-06,
+      7.9e-06,
+      3.3e-06,
+      3.3e-06,
+      3.3e-06
+    ],
+    "reduction": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+    ]
+  },
+  "friction": {
+    "source": "Muraccioli et al., RSS 2025, Sec. VII-A, eq. (12)",
+    "viscous": [
+      2.0,
+      2.0,
+      2.0,
+      1.36,
+      1.36,
+      1.36
+    ],
+    "coulomb": [
+      2.15,
+      2.15,
+      2.15,
+      1.6,
+      1.6,
+      1.6
+    ]
+  }
+}

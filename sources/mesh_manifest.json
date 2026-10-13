@@ -1,0 +1,51 @@
+[
+  {
+    "link": "base_link",
+    "path": "sources/meshes/base_link.STL",
+    "url": "https://raw.githubusercontent.com/Kinovarobotics/ros_kortex/5f66bbd1be84cb699020621dc7c8f3df01394960/kortex_description/arms/gen3/6dof/meshes/base_link.STL",
+    "revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+    "sha256": "943d08080967df2d7a292159af30dc0e8266f164c065a41c3f172e3b91ddf380"
+  },
+  {
+    "link": "shoulder_link",
+    "path": "sources/meshes/shoulder_link.STL",
+    "url": "https://raw.githubusercontent.com/Kinovarobotics/ros_kortex/5f66bbd1be84cb699020621dc7c8f3df01394960/kortex_description/arms/gen3/6dof/meshes/shoulder_link.STL",
+    "revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+    "sha256": "6ddffa8f20dd1542a9d9d25560579a377e9d91abc8eedc3496c0be53107136c0"
+  },
+  {
+    "link": "bicep_link",
+    "path": "sources/meshes/bicep_link.STL",
+    "url": "https://raw.githubusercontent.com/Kinovarobotics/ros_kortex/5f66bbd1be84cb699020621dc7c8f3df01394960/kortex_description/arms/gen3/6dof/meshes/bicep_link.STL",
+    "revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+    "sha256": "1b0f84b00c10b9eafa6b65fe93db264a5fa90b89b393e4a277ad13f952c47175"
+  },
+  {
+    "link": "forearm_link",
+    "path": "sources/meshes/forearm_link.STL",
+    "url": "https://raw.githubusercontent.com/Kinovarobotics/ros_kortex/5f66bbd1be84cb699020621dc7c8f3df01394960/kortex_description/arms/gen3/6dof/meshes/forearm_link.STL",
+    "revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+    "sha256": "a835c44a59d534eaf46d61f005f19af3c3855f1136aba8bb2ae58aae24158074"
+  },
+  {
+    "link": "spherical_wrist_1_link",
+    "path": "sources/meshes/spherical_wrist_1_link.STL",
+    "url": "https://raw.githubusercontent.com/Kinovarobotics/ros_kortex/5f66bbd1be84cb699020621dc7c8f3df01394960/kortex_description/arms/gen3/6dof/meshes/spherical_wrist_1_link.STL",
+    "revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+    "sha256": "7238c38da8302f033bb923a6c5928e030bd12ebf8648dbfa7dbc2e849da0f35a"
+  },
+  {
+    "link": "spherical_wrist_2_link",
+    "path": "sources/meshes/spherical_wrist_2_link.STL",
+    "url": "https://raw.githubusercontent.com/Kinovarobotics/ros_kortex/5f66bbd1be84cb699020621dc7c8f3df01394960/kortex_description/arms/gen3/6dof/meshes/spherical_wrist_2_link.STL",
+    "revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+    "sha256": "4a497fc7e8db1115057910d4e86bc1e4593c1a617ad66355fea5c5b8392b8b8c"
+  },
+  {
+    "link": "bracelet_link",
+    "path": "sources/meshes/bracelet_no_vision_link.STL",
+    "url": "https://raw.githubusercontent.com/Kinovarobotics/ros_kortex/5f66bbd1be84cb699020621dc7c8f3df01394960/kortex_description/arms/gen3/6dof/meshes/bracelet_no_vision_link.STL",
+    "revision": "5f66bbd1be84cb699020621dc7c8f3df01394960",
+    "sha256": "5b2ec7dafbf6a3c9a2cac717d18132a8a1efd9fcb8f2c40d9c12c8ece7323ec8"
+  }
+]
