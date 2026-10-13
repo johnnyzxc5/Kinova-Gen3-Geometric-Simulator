@@ -1,143 +1,143 @@
 [
   {
     "path": "third_party/modern_robotics/ad.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\ad.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/ad.m",
     "sha256": "7cd227fb452916a2d5878b32790641ba2aad9f94eb651b08ed8473b4500d19ad",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/Adjoint.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\Adjoint.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/Adjoint.m",
     "sha256": "fa4837f58760acf8d63a09df12d68ce365d1ccec94e7c772e5b3254de26c33b6",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/AxisAng3.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\AxisAng3.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/AxisAng3.m",
     "sha256": "399e0c447dc1be6c9c37d51c7a71a31aae16e1e611ba9f09c00c79b9e9050bdb",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/InverseDynamics.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\InverseDynamics.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/InverseDynamics.m",
     "sha256": "e3ccce7ffe91f997cd2282d8ead64e46e4dd8a10704193c7bff938372fa8d6ed",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/MassMatrix.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\MassMatrix.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/MassMatrix.m",
     "sha256": "5d082601c8ae5fe88eba74ec765557abc81e8213f8a7eb184c81cf5da44ae1db",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/MatrixExp3.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\MatrixExp3.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/MatrixExp3.m",
     "sha256": "cbe84863be13ec583ff02b3944dde806f2da6237201a43130e4777154cfd71a3",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/MatrixExp6.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\MatrixExp6.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/MatrixExp6.m",
     "sha256": "748c9a4cca65dc3c6dd063d0f6f080c13c827c7f451bbf16e002902c9bc5c5e3",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/MatrixLog3.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\MatrixLog3.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/MatrixLog3.m",
     "sha256": "a2f08cdd83713bcc6d3a745d6841b2e4c922ada9fcec50d7004937852283fc02",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/MatrixLog6.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\MatrixLog6.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/MatrixLog6.m",
     "sha256": "74efbfc56ffead9a66732795d1526453e1d48e877cbbfe7ff189396fe91651f9",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/NearZero.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\NearZero.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/NearZero.m",
     "sha256": "72a9fdccd78f48f527c383b5d0a5bf79539f0e159df71fded215215732e9dacc",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/TransInv.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\TransInv.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/TransInv.m",
     "sha256": "bf7130d641eb9e0fff6ed2ba94cb29e145abe18ae24b65e46551ee3a0bde7c0c",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/VecTose3.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\VecTose3.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/VecTose3.m",
     "sha256": "e2716ef82edd5aec6a44e9a99b28fb5af26783c3f7e3fb3508a021a7e6cfeb7f",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/VecToso3.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\VecToso3.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/VecToso3.m",
     "sha256": "2d9a30091126feb1435ef5b8e1ade8a99f9ca5c50ea4c7937736d1a0856fad58",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/so3ToVec.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\so3ToVec.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/so3ToVec.m",
     "sha256": "8ba3abe03e4a6f91a717ce689641947466589db6d33b938652697459cb0f1feb",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/se3ToVec.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\se3ToVec.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/se3ToVec.m",
     "sha256": "43f906673c8d6b7342ac8bf621ceddf41481ea6e70c91204d02ee99a67701939",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/TransToRp.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\TransToRp.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/TransToRp.m",
     "sha256": "2c95bb8a741c1625514b500ec3b5ef7747f1907a5dac7c4b66838c69baec9a0e",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/JacobianSpace.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\JacobianSpace.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/JacobianSpace.m",
     "sha256": "ec35f2c3c2544a702e51076045a70ae878dabf460e59ff771e8df98c14e232cf",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/JacobianBody.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MATLAB\\mr\\JacobianBody.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MATLAB/mr/JacobianBody.m",
     "sha256": "f0f88877433d420671849b2df6791bf0a4de7f9010379b6df0339941da8ef4dd",
     "license": "MIT, NxRLab; preserved local SHAPE copy"
   },
   {
     "path": "third_party/modern_robotics/LICENSE",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\third_party\\ModernRobotics\\LICENSE",
+    "source": "SHAPE-paper-reproducibility/third_party/ModernRobotics/LICENSE",
     "sha256": "fceef33c97fed32a270a56069bb45c108e473dfd1642c2648fa84779a9455d88"
   },
   {
     "path": "third_party/shape_kernels/rnea_shared_kinematics_MR.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\rnea_shared_kinematics_MR.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/rnea_shared_kinematics_MR.m",
     "sha256": "618138f82ff473da95a4b5047ed51ddc1e329a37ce03c031c8e75dd657248ccf",
     "note": "Copied byte-for-byte; validated on corrected relative transforms in this repository"
   },
   {
     "path": "third_party/shape_kernels/InverseDynamicsSharedKinematics_MR.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\InverseDynamicsSharedKinematics_MR.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/InverseDynamicsSharedKinematics_MR.m",
     "sha256": "199e12af463fac25625da752836b05e9d3051fd97bb64b901b2d61af873ba2a3",
     "note": "Copied byte-for-byte; validated on corrected relative transforms in this repository"
   },
   {
     "path": "third_party/shape_kernels/MassMatrixZeroStateSharedKinematics_MR.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\SHAPE-paper-reproducibility\\Code_Image\\MassMatrixZeroStateSharedKinematics_MR.m",
+    "source": "SHAPE-paper-reproducibility/Code_Image/MassMatrixZeroStateSharedKinematics_MR.m",
     "sha256": "8a72d91b1c7e7ef17e5830a09cad756f4d6b45c03d793deae2506f888683e68f",
     "note": "Copied byte-for-byte; validated on corrected relative transforms in this repository"
   },
   {
     "path": "third_party/flatness/+ftv5/phase.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\Paper_FlatnessMPC\\benchmark_v5\\+ftv5\\phase.m",
+    "source": "Paper_FlatnessMPC/benchmark_v5/+ftv5/phase.m",
     "sha256": "993b0ed932c9f4c91003d275b9eb5e02b0fa66c7d1f12827106342a7fab72e5c"
   },
   {
     "path": "third_party/flatness/+ftv5/phase_plan.m",
-    "source": "C:\\Users\\Johnny\\Desktop\\Git\\Paper_FlatnessMPC\\benchmark_v5\\+ftv5\\phase_plan.m",
+    "source": "Paper_FlatnessMPC/benchmark_v5/+ftv5/phase_plan.m",
     "sha256": "8604b09b025810026be8d1f118bfcac9b4ec83f2c7e1b4e0739581ffd56cba8c"
   },
   {

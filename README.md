@@ -2,6 +2,8 @@
 
 A standalone MATLAB mechanical model of the **six-joint Kinova Gen3, without the vision module or a gripper**. Kinematics use twists, adjoints and exponential maps on SE(3). Dynamics reuse the optimized spatial Newton-Euler kernels developed for SHAPE.
 
+Version **0.1.0**. MATLAB-only runtime, with source parameters, validation receipts and third-party licenses included. See [release history](CHANGELOG.md).
+
 ![Kinova simulation](results/kinova_preview.png)
 
 ## Run

@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this simulator, cite the software and the parameter sources documented in README.md."
+type: software
+title: "Kinova Gen3 Geometric Simulator"
+version: "0.1.0"
+date-released: "2026-10-13"
+authors:
+  - family-names: Garcia
+    given-names: Johnny
+license: MIT
+repository-code: "https://github.com/johnnyzxc5/Kinova-Gen3-Geometric-Simulator"
+keywords:
+  - MATLAB
+  - robot dynamics
+  - Lie groups
+  - Kinova Gen3

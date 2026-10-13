@@ -32,7 +32,13 @@ def record(target, source, **extra):
 def copy(source, target, **extra):
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(source, target)
-    record(target, str(source), **extra)
+    if SHAPE and source.is_relative_to(SHAPE):
+        origin = 'SHAPE-paper-reproducibility/' + source.relative_to(SHAPE).as_posix()
+    elif FLATNESS and source.is_relative_to(FLATNESS):
+        origin = 'Paper_FlatnessMPC/benchmark_v5/' + source.relative_to(FLATNESS).as_posix()
+    else:
+        origin = source.name
+    record(target, origin, **extra)
 
 
 urdf = ROOT / "sources" / "kinova_gen3_6dof_novision.urdf"
