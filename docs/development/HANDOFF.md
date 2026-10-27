@@ -12,8 +12,8 @@
 | Hito | Trabajo | Modelo Sugerido | Estado | Fecha / Nota |
 |:---:|---|:---:|:---:|---|
 | **H0** | **Auditoría y baseline** | **Flash 3.8 High** | **COMPLETADO** | 27-Oct-2026. Auditoría completa, tests ejecutados en MATLAB R2026a, baseline 6.75x y 3.26e-9 J documentado en `AUDIT_BASELINE.md`, rama `experiment/kinova-s1-dynamics` creada. |
-| **H1** | **Adaptación e implementación S¹** | **Flash 3.8 High** | **EN PROGRESO** | Creación del paquete `+kinova_s1`, kernels en `third_party/shape_kernels/`, manejo de juntas continuas (1,4,6) y acotadas (2,3,5). |
-| **H2** | **Tests, simulaciones y benchmarks** | **Flash 3.8 High** | **PENDIENTE** | Suites de tests unitarios y de consistencia, comparación A/B/B-alg, paridad física y benchmarks. Al finalizar H2, **DETENERSE para Argon**. |
+| **H1** | **Adaptación e implementación S¹** | **Flash 3.8 High** | **COMPLETADO** | 27-Oct-2026. Paquete `+kinova_s1`, kernel `rnea_shared_kinematics_S1`, manejo de juntas continuas/acotadas, paridad matemática de máquina verificada, `GEOMETRIC_DYNAMICS_IMPLEMENTATION.md` y `MATHEMATICAL_FORMULATION.md`. |
+| **H2** | **Tests, simulaciones y benchmarks** | **Flash 3.8 High** | **EN PROGRESO** | Suites de tests unitarios y de consistencia, comparación A/B/B-alg, paridad física y benchmarks. Al finalizar H2, **DETENERSE para Argon**. |
 | **H3** | **Revisión matemática independiente** | **Argon / Astra** | **PENDIENTE** | Auditoría matemática y topológica independiente. Al finalizar H3, **DETENERSE para Flash**. |
 | **H4** | **Correcciones, GIFs y documentación** | **Flash 3.8 High** | **PENDIENTE** | Cierre de puntos de H3, generación de animaciones GIF lado a lado y portada `README.md`. |
 | **H5** | **Publicación, revisión visual y cierre** | **Flash 3.8 High** | **PENDIENTE** | Merge a `main`, push remoto, verificación de renderizado en GitHub y entrega final. |
@@ -35,6 +35,37 @@
     - `benchmark_kinova`: Modern Robotics canónico 981.40 µs vs RNEA optimizado 145.40 µs (aceleración 6.75x).
     - `run_kinova_demo`: Error de balance energético nominal 3.258e-9 J, paso fino 2.727e-9 J.
   - Documento `docs/development/AUDIT_BASELINE.md` redactado y archivado.
+
+---
+
+### Hito H1 — Adaptación e Implementación S¹
+* **Estado:** **COMPLETADO**
+* **Responsable:** Flash 3.8 High
+* **Resultados clave:**
+  - Implementación completa del paquete `+kinova_s1`:
+    - `model.m`: clasificación formal de juntas continuas (1, 4, 6) y acotadas (2, 3, 5), cálculo de arcos $u_i = (1, 0)^T$, verificación de ejes puros en $\hat{z}$ ($A_i = [0;0;1;0;0;0]$).
+    - `config_matrix.m`: validación y normalización $X \in (S^1)^6 \subset \mathbb{R}^{2\times 6}$.
+    - `from_q.m` y `to_q.m`: levantamiento centrado seguro de cortes de rama para juntas acotadas, y desenrollado continuo con preservación de vueltas acumuladas para juntas continuas.
+    - `exp_s1.m`: acción del grupo de Lie $SO(2)^6$ sobre $(S^1)^6$ con preservación de norma unitaria a nivel de máquina ($2.22 \times 10^{-16}$).
+    - `screw_exp.m`: mapa exponencial algebraico en $SE(3)$ según Teorema 2.1, sin funciones trascendentales en tornillos revolutos unitarios de paso cero.
+    - `check_limits.m`: verificación rigurosa de límites de arco para 2, 3, 5 y admisión completa sin topes inventados para 1, 4, 6.
+    - `box_diff.m` y `geodesic_diff.m`: desplazamientos conexos en arcos acotados y geodésicos en factores continuos con soporte de vueltas enteras.
+    - `reference.m`: generador de trayectoria quintic intrínseca sobre $(S^1)^6$.
+    - `fk.m` y `frames.m`: cinemática directa PoE y cadena de eslabones independientes.
+    - `jacobian.m`: jacobianos de twist espacial y corporal directamente en $(S^1)^6$.
+    - `dynamics.m`, `inverse_dynamics.m`, `forward_dynamics.m`, `energy.m`: dinámica RNEA optimizada con inercia aparente $J_{\text{app}}$ (Cholet, rigid, custom) y fricción (Muraccioli, blend, none) respetadas al 100%.
+    - `lagrange_reference.m`: oráculo independiente COM-Jacobiano en $(S^1)^6$ para validación cruzada.
+    - `simulate.m`: integrador Munthe-Kaas RK4 en $(S^1)^6 \times \mathbb{R}^6$ con ZOH, saturación de torque, efectividad, wrenches externos y telemetría desenrollada.
+    - `draw_robot.m`: renderizado 3D de eslabones oficiales Kinova desde configuración $X$.
+  - Kernel optimizado: `third_party/shape_kernels/rnea_shared_kinematics_S1.m` adaptado para 6 DoF con homomorfismo adjunto por rotación plana de filas y caché bitwise `uint64`.
+  - Smoke tests verificados en MATLAB R2026a:
+    - Error FK frente a Versión A: $1.18 \times 10^{-15}$
+    - Error Matriz de Masa $M$: $5.84 \times 10^{-16}$
+    - Error Bias dinámico $b$: $3.35 \times 10^{-15}$
+    - Error de norma unitaria en simulación: $2.22 \times 10^{-16}$
+    - Paridad de trayectoria en simulación: $5.86 \times 10^{-11}\text{ rad}$
+    - Error de balance de energía: $3.258 \times 10^{-9}\text{ J}$
+  - Documentos técnicos `GEOMETRIC_DYNAMICS_IMPLEMENTATION.md` y `MATHEMATICAL_FORMULATION.md` redactados.
 
 ---
 
