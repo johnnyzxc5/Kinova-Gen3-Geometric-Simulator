@@ -2,7 +2,7 @@
 
 A standalone, reproducible MATLAB mechanical simulator of the **six-degree-of-freedom Kinova Gen3 (without vision module or gripper)**, implementing and comparing two distinct geometric dynamics representations of the same physical robot:
 - **Version A — Original Joint-Coordinate Geometric Dynamics (`+kinova/`):** Joint coordinates $q \in \mathbb{R}^6$, spatial Product of Exponentials (PoE) in $SE(3)$, twists, adjoints, and SHAPE-optimized spatial recursive Newton–Euler algorithms (RNEA).
-- **Version B — Global Lie-Group Dynamics on $(S^1)^6$ (`+kinova_s1/`):** Configuration on the 6-torus unit manifold $X \in (S^1)^6 \subset \mathbb{R}^{2\times 6}$, purely algebraic screw exponentials (Theorem 2.1), hoisted adjoint homomorphism factorization, Abelian Munthe–Kaas 4-stage Lie-group RK4 integration, and rigorous handling of mixed topology: continuous joints $\{1, 4, 6\}$ (unbounded $\mathbb{R}$, fiber winding $w \in \mathbb{Z}$) vs. bounded revolute joints $\{2, 3, 5\}$ (admissible closed arcs $\mathcal{A}_i \subsetneq S^1$).
+- **Version B — Global Lie-Group Dynamics on $(S^1)^6$ (`+kinova_s1/`):** Configuration on the 6-torus unit manifold $X \in (S^1)^6 \subset \mathbb{R}^{2\times 6}$, purely algebraic screw exponentials (Theorem 2.1), hoisted adjoint homomorphism factorization, Abelian Munthe–Kaas 4-stage Lie-group RK4 integration, and rigorous handling of mixed topology: continuous joints 1, 4, 6 (unbounded $\mathbb{R}$, fiber winding $w \in \mathbb{Z}$) vs. bounded revolute joints 2, 3, 5 (admissible closed arcs $\mathcal{A}_i \subsetneq S^1$).
 
 Both formulations share identical physical parameters from the official Kinova URDF, identical actuator apparent inertia ($J_{\text{app}}$, Cholet 2025), and identical smooth friction models (Muraccioli et al., RSS 2025). Neither representation alters the physics or physical limits of the manipulator.
 
@@ -32,8 +32,8 @@ Both formulations share identical physical parameters from the official Kinova U
 | **Space Screw Exponential** | $\exp([\mathcal{S}_i] q_i) \in SE(3)$ via series / Rodrigues (`MatrixExp6`) | $\exp([\mathcal{S}_i], x_i) = I_4 + s_i [\mathcal{S}_i] + (1 - c_i) [\mathcal{S}_i]^2$ ([Theorem 2.1](#core-geometric-equations-on-s16): purely algebraic) |
 | **Link Transformations** | $T_{0,i} = T_{0,i-1} M_i \exp([\mathcal{A}_i] q_i)$, with $\mathcal{A}_i = [0, 0, 1, 0, 0, 0]^\top$ | $T_{0,i} = T_{0,i-1} M_i T_z(x_i)$, with $T_z(x_i) = \mathrm{diag}(R_z(x_i), 1)$ (zero transcendental calls) |
 | **Inter-Link Adjoints (RNEA)** | Recursive PoE adjoints via `Adjoint` with `NearZero` threshold | Hoisted matrix-free product ([Eq. 3](#core-geometric-equations-on-s16)) without conditional branching |
-| **Continuous Joints ($\{1, 4, 6\}$)** | Unbounded coordinates $q_i \in (-\infty, +\infty)$ | Full circle $S^1$, with exact fiber winding offset $w_i \in \mathbb{Z}$ in covering space ([Eq. 5](#core-geometric-equations-on-s16)) |
-| **Bounded Revolute ($\{2, 3, 5\}$)** | Symmetric intervals $[q_{\min,i}, q_{\max,i}]$ | Exact algebraic arc condition $u_i^\top \hat{x}_i \ge \cos h_i$ and centered chart $\delta_i \in [-h_i, h_i]$ ([Eq. 4](#core-geometric-equations-on-s16)) |
+| **Continuous Joints (1, 4, 6)** | Unbounded coordinates $q_i \in (-\infty, +\infty)$ | Full circle $S^1$, with exact fiber winding offset $w_i \in \mathbb{Z}$ in covering space ([Eq. 5](#core-geometric-equations-on-s16)) |
+| **Bounded Revolute (2, 3, 5)** | Symmetric intervals $[q_{\min,i}, q_{\max,i}]$ | Exact algebraic arc condition $u_i^\top \hat{x}_i \ge \cos h_i$ and centered chart $\delta_i \in [-h_i, h_i]$ ([Eq. 4](#core-geometric-equations-on-s16)) |
 | **Algebraic Character** | Involves trigonometric calls (`cos`, `sin`) at every joint | **Polynomial in $(c_i, s_i)$** for FK, Jacobians, and RNEA; **rational in $(c_i, s_i)$** for FD |
 | **Equations of Motion** | $M(q)\ddot{q} + c(q, \dot{q}) + g(q) + f(\dot{q}) = \tau$ | $M(X)\dot{\omega} + c(X, \omega) + g(X) + f(\omega) = \tau$ (Lee et al. 2018, Eq. 4.12) |
 | **Numerical Integration** | Classical 4-stage Runge–Kutta (RK4) in $\mathbb{R}^{12}$ | Abelian Munthe–Kaas 4-stage Lie-group RK4 (RK4-MK) with machine-precision norm preservation |
@@ -65,22 +65,22 @@ $$
 \mathrm{Ad}_{T_{i,i-1}}(x_i) = \mathrm{diag}\left(R_z(x_i)^\top, R_z(x_i)^\top\right) B^{(i)}
 $$
 
-#### 4. Algebraic Characterization of Bounded Revolute Joints ($\{2, 3, 5\}$)
+#### 4. Algebraic Characterization of Bounded Revolute Joints (2, 3, 5)
 
 Joints 2, 3, and 5 have symmetric physical limits ($m_i = 0$, $u_i = [1, 0]^\top$) with half-spans $h_2 = 2.24$, $h_3 = 2.57$, $h_5 = 2.09\text{ rad} < \pi$. The admissible arc $\mathcal{A}_i \subsetneq S^1$ is characterized algebraically by:
 
 $$
-\mathcal{A}_i = \left\{ x_i \in \mathbb{R}^2 \mid x_i^\top x_i = 1, \quad u_i^\top \hat{x}_i \ge \cos h_i \right\}, \qquad \mu_i = h_i - |\delta_i(x_i)| \ge 0
+\mathcal{A}_i = \left\lbrace x_i \in \mathbb{R}^2 \mid x_i^\top x_i = 1, \quad u_i^\top \hat{x}_i \ge \cos h_i \right\rbrace, \qquad \mu_i = h_i - |\delta_i(x_i)| \ge 0
 $$
 
-where $\delta_i(x_i) = \operatorname{atan2}(s_i, c_i) \in [-h_i, h_i]$ is the centered arc chart placing the branch cut strictly in the forbidden mechanical stop sector $S^1 \setminus \mathcal{A}_i$.
+where $\delta_i(x_i) = \mathrm{atan2}(s_i, c_i) \in [-h_i, h_i]$ is the centered arc chart placing the branch cut strictly in the forbidden mechanical stop sector $S^1 \setminus \mathcal{A}_i$.
 
-#### 5. Universal Covering Space and Fiber Winding Contract for Continuous Joints ($\{1, 4, 6\}$)
+#### 5. Universal Covering Space and Fiber Winding Contract for Continuous Joints (1, 4, 6)
 
 Joints 1, 4, and 6 have no mechanical stops ($q \in \mathbb{R}$). For continuous trajectory tracking, the discrete fiber of the universal covering projection $\pi: \mathbb{R} \to S^1$ is tracked via the continuous lift $\tilde{q}(t) = q_0 + \int_0^t \omega(\tau)\,d\tau$. The integer fiber offset:
 
 $$
-w_i = \operatorname{round}\left(\frac{(q_{r,i} - \tilde{q}_i) - d_{\text{geo},i}(X_r, X)}{2\pi}\right) \in \mathbb{Z}
+w_i = \mathrm{round}\left(\frac{(q_{r,i} - \tilde{q}_i) - d_{\mathrm{geo},i}(X_r, X)}{2\pi}\right) \in \mathbb{Z}
 $$
 
 guarantees zero winding slip even if transient tracking errors exceed $\pi\text{ rad}$ (e.g. under torque saturation).
