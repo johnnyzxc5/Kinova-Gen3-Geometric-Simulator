@@ -3,7 +3,7 @@
 **Archivo de seguimiento y transferencia entre modelos de IA (Flash 3.8 High y Argon/Astra)**  
 **Repositorio:** `C:\Users\Johnny\Desktop\Git\Kinova-Gen3-Geometric-Simulator`  
 **Rama activa:** `experiment/kinova-s1-dynamics`  
-**Última actualización:** 27 de octubre de 2026 (Hito H3 completado por Gemini 4 Argon — **PAUSA PARA CAMBIAR A FLASH 3.8 HIGH EN H4 y H5**)
+**Última actualización:** 27 de octubre de 2026 (Hitos H0–H4 completados por Flash 3.8 High y Gemini 4 Argon — **EJECUTANDO HITO H5**)
 
 ---
 
@@ -14,9 +14,9 @@
 | **H0** | **Auditoría y baseline** | **Flash 3.8 High** | **COMPLETADO** | 27-Oct-2026 (`b2edfe2`). Auditoría completa, tests ejecutados en MATLAB R2026a, baseline 6.75x y 3.26e-9 J documentado en `AUDIT_BASELINE.md`, rama `experiment/kinova-s1-dynamics` creada. |
 | **H1** | **Adaptación e implementación S¹** | **Flash 3.8 High** | **COMPLETADO** | 27-Oct-2026 (`d45a778`). Paquete `+kinova_s1`, kernel `rnea_shared_kinematics_S1`, manejo de juntas continuas/acotadas, paridad matemática de máquina verificada, `GEOMETRIC_DYNAMICS_IMPLEMENTATION.md` y `MATHEMATICAL_FORMULATION.md`. |
 | **H2** | **Tests, simulaciones y benchmarks** | **Flash 3.8 High** | **COMPLETADO** | 27-Oct-2026 (`ec9d938`). Suites de tests unitarios y de consistencia (`validate_kinova_s1`, `test_s1_geometry_limits`, `test_s1_simulation_consistency`), benchmark 4 vías (`benchmark_s1_comparison`), paridad de máquina y convergencia $O(h^4)$. |
-| **H3** | **Revisión matemática independiente** | **Gemini 4 Argon** | **COMPLETADO** | 27-Oct-2026. Auditoría matemática, física y de código completada en `SCIENTIFIC_REVIEW_HITO3.md`. 4 hallazgos críticos resueltos y verificados en MATLAB. **DETENCIÓN REQUERIDA: EL USUARIO CAMBIARÁ A FLASH 3.8 HIGH**. |
-| **H4** | **Correcciones, GIFs y documentación** | **Flash 3.8 High** | **PENDIENTE (SIGUIENTE)** | Generación reproducible de 3 animaciones GIF (`kinova_version_a.gif`, `kinova_version_b.gif`, `kinova_comparison_side_by_side.gif`) y redacción del `README.md` público con ambas formulaciones. |
-| **H5** | **Publicación, revisión visual y cierre** | **Flash 3.8 High** | **PENDIENTE** | Merge a `main`, push remoto, verificación de renderizado en GitHub y entrega final. |
+| **H3** | **Revisión matemática independiente** | **Gemini 4 Argon** | **COMPLETADO** | 27-Oct-2026 (`86ab350`). Auditoría matemática, física y de código completada en `SCIENTIFIC_REVIEW_HITO3.md`. 4 hallazgos críticos resueltos y verificados en MATLAB. |
+| **H4** | **Correcciones, GIFs y documentación** | **Flash 3.8 High** | **COMPLETADO** | 27-Oct-2026. Script `tools/generate_kinova_animations.m`, generación de las 3 animaciones GIF 3D (`kinova_version_a.gif`, `kinova_version_b.gif`, `kinova_comparison_side_by_side.gif`) y `README.md` público con ambas formulaciones protagonistas y formato KaTeX. |
+| **H5** | **Publicación, revisión visual y cierre** | **Flash 3.8 High** | **PENDIENTE (ACTIVO)** | Merge a `main`, push remoto, verificación de renderizado en GitHub y entrega final. |
 
 ---
 
@@ -127,19 +127,28 @@
 
 ---
 
-## 3. Instrucciones Exactas para Flash 3.8 High en H4 y H5
+### Hito H4 — Correcciones, GIFs y Documentación (Flash 3.8 High)
+* **Estado:** **COMPLETADO**
+* **Responsable:** Flash 3.8 High
+* **Resultados clave:**
+  - Script reproducible creado: `tools/generate_kinova_animations.m`.
+  - Generadas las 3 animaciones GIF 3D de alta resolución (mallas STL del fabricante, traza del actuador final, trayectoria deseada y HUD dinámico):
+    - `docs/assets/kinova_version_a.gif` (y copia en `results/`)
+    - `docs/assets/kinova_version_b.gif` (y copia en `results/`)
+    - `docs/assets/kinova_comparison_side_by_side.gif` (y copia en `results/`)
+  - Rediseñado completamente `README.md` presentando las **DOS formulaciones principales** desde el comienzo (Version A y Version B), con badges, GIFs embebidos, ecuaciones KaTeX/MathJax, tabla comparativa de topología mixta (juntas continuas 1, 4, 6 vs acotadas 2, 3, 5), análisis exhaustivo de `NearZero` vs convergencia $O(h^4)$, micro-benchmarks y enlaces directos a la documentación científica.
 
-1. **HITO H4 (Correcciones, GIFs y Documentación):**
-   - Los hallazgos matemáticos de H3 ya quedaron aplicados y verificados en código y tests.
-   - Crear un script reproducible `tools/generate_kinova_animations.m` (tomando como referencia visual el estilo del repositorio Panda) que genere las **3 animaciones GIF obligatorias**:
-     - `results/kinova_version_a.gif`: Simulación 3D de la Versión A (`+kinova`, $q \in \mathbb{R}^6$).
-     - `results/kinova_version_b.gif`: Simulación 3D de la Versión B (`+kinova_s1`, $X \in (S^1)^6$).
-     - `results/kinova_comparison_side_by_side.gif`: Comparación sincronizada lado a lado de ambas formulaciones mostrando paridad espacial ($0.48\,\mu\text{m}$), aceleración ($1.43\times$ en simulación, hasta $5.66\times$ en marcos y $2.05\times$ en RNEA) y ventaja de precisión energética bajo refinamiento ($16.37\times$ a $h=0.25\,\text{ms}$, $290.8\times$ a $h=0.125\,\text{ms}$).
-   - Redactar el `README.md` principal presentando **las DOS formulaciones protagonistas** desde el comienzo (**Version A — Original Joint-Coordinate Geometric Dynamics** y **Version B — Global Lie-Group Dynamics on $(S^1)^6$**), integrando los GIFs, la figura `docs/assets/benchmark_s1_comparison.png`, la tabla de topología mixta (juntas continuas 1, 4, 6 vs acotadas 2, 3, 5), el análisis de `NearZero` vs convergencia $O(h^4)$, y enlaces limpios a `docs/development/`.
-2. **HITO H5 (Publicación, Revisión Visual y Cierre):**
-   - Ejecutar la batería completa de pruebas (`validate_kinova`, `test_simulation_inputs`, `validate_kinova_s1`, `test_s1_geometry_limits`, `test_s1_simulation_consistency`).
-   - Hacer merge de `experiment/kinova-s1-dynamics` a `main` y `git push origin main` (además de publicar la rama experimental).
-   - Abrir la página remota `https://github.com/johnnyzxc5/Kinova-Gen3-Geometric-Simulator` en el navegador para comprobar visualmente que todas las ecuaciones LaTeX/MathJax, tablas, imágenes y animaciones GIF se renderizan sin errores.
+---
+
+### Hito H5 — Publicación, Revisión Visual y Cierre (Flash 3.8 High)
+* **Estado:** **EN PROCESO / FINALIZACIÓN**
+* **Responsable:** Flash 3.8 High
+* **Plan de ejecución:**
+  1. Ejecución final de la suite completa de tests (`validate_kinova`, `test_simulation_inputs`, `validate_kinova_s1`, `test_s1_geometry_limits`, `test_s1_simulation_consistency`).
+  2. Commit de H4 en la rama `experiment/kinova-s1-dynamics`.
+  3. Merge de `experiment/kinova-s1-dynamics` a `main`.
+  4. Push remoto a GitHub (`main` y `experiment/kinova-s1-dynamics`).
+  5. Inspección remota de la página web de GitHub para verificar renderizado visual de GIFs, KaTeX y tablas.
 
 ---
 
@@ -150,11 +159,4 @@
   - Rama activa: `experiment/kinova-s1-dynamics`.
   - Código Versión A (`+kinova`): 100% conservado y validado.
   - Código Versión B (`+kinova_s1`): Auditado por Gemini 4 Argon, 100% PASS en todas las suites.
-
----
-
-## 5. Próxima Acción Exacta
-
-**DETENCIÓN OBLIGATORIA DE GEMINI 4 ARGON AL FINALIZAR H3:**
-El Hito H3 ha concluido íntegramente.
-El usuario debe cambiar ahora el modelo de vuelta a **Flash 3.8 High** y escribir **«sigue»** para ejecutar los **Hitos H4 y H5** hasta el cierre y publicación final.
+  - Portada `README.md` y animaciones GIF 3D: Listas y probadas.
