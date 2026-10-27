@@ -113,7 +113,7 @@ All states are sampled strictly inside the **physically admissible operating env
 | **Final Trajectory Parity** | $< 10^{-14}\text{ rad}$ | 0 (Reference) | **Machine precision** | Trajectories match down to numerical roundoff |
 | **Manifold Preservation Error** | N/A (ambient $\mathbb{R}^{12}$) | **$2.22 \times 10^{-16}$** | **1 ulp precision** | Lie-group projection $\|\hat{x}_i\|_2 = 1$ strictly maintained |
 
-![Benchmark Comparison](docs/assets/benchmark_s1_comparison.png)
+![Direct Comparison: Version A vs. Version B](docs/assets/benchmark_a_vs_b.png)
 
 ### Elimination of `MatrixExp6` / `NearZero` Stagnation
 
@@ -124,11 +124,12 @@ Because rotations in Version B are evaluated purely algebraically on $S^1$ witho
 - At $h = 0.125\,\text{ms}$, the energy residual drops to **$9.3765 \times 10^{-12}\text{ J}$ ($290.8\times$ lower than Version A)** with reduction ratio $17.77 \approx 2^4 = 16$.
 
 > [!NOTE]
-> **Independent Four-Way Ablation Study (Stock MR vs. Version A vs. Variant B-alg vs. Version B):**  
-> To isolate the root causes of the performance gains, an auxiliary ablation benchmark was conducted on identical physical states with two additional control implementations: **Stock Modern Robotics** (canonical textbook baseline) and **Variant B-alg** (which operates in joint coordinates $q \in \mathbb{R}^6$ but invokes the specialized $S^1$ kernels).  
-> - **Algorithmic Specialization:** The ablation demonstrates that the majority of the speedup over Version A stems from Theorem 2.1 and the hoisted adjoint factorization $B^{(i)} = \mathrm{Ad}_{M_i^{-1}}$.
-> - **Manifold State:** Operating directly on $X \in (S^1)^6$ provides an additional 5.5% to 18.0% speedup in kinematics and dynamics by eliminating runtime `cos(q)` / `sin(q)` evaluations.
-> - **Full Report:** See [BENCHMARK_COMPARISON.md](docs/development/BENCHMARK_COMPARISON.md) for full timing distributions, conversion primitive costs, and profiling breakdowns.
+> **Algorithmic Specialization vs. Manifold State (Four-Way Ablation Study):**  
+> To distinguish between the gains from mathematical specialization and those from the manifold state representation, an auxiliary ablation benchmark was conducted on identical physical states with two additional controls: **Stock Modern Robotics** (textbook baseline) and **Variant B-alg** (which operates in joint coordinates $q \in \mathbb{R}^6$ using the specialized $S^1$ kernels).  
+> - **Algorithmic Optimization:** The primary speedup over Version A (e.g. $146.31\,\mu\text{s} \to 95.66\,\mu\text{s}$ in dynamics, and $4.70\,\text{s} \to 3.29\,\text{s}$ in simulation) stems from Theorem 2.1 and the hoisted adjoint homomorphism factorization $B^{(i)} = \mathrm{Ad}_{M_i^{-1}}$, which eliminates matrix exponentials, matrix logarithms, and matrix inversions.
+> - **Manifold State Trade-Offs:** Storing the state directly on the manifold $X \in (S^1)^6$ avoids repeatedly evaluating $\cos(q_i)$ and $\sin(q_i)$, giving Version B an edge in operations like link frames ($7.79\,\mu\text{s}$ vs. $9.51\,\mu\text{s}$) and total dynamics ($95.66\,\mu\text{s}$ vs. $101.21\,\mu\text{s}$). However, this is not a universal speedup across all routines: Variant B-alg is slightly faster in isolated RNEA ($45.61\,\mu\text{s}$ vs. $46.97\,\mu\text{s}$) and closed-loop simulation ($3.18\,\text{s}$ vs. $3.29\,\text{s}$) because the Abelian Munthe–Kaas integrator performs four Lie-group group actions `exp_s1` with radial unit-norm projection per plant substep.
+> - **Decisive Qualitative Advantages:** The primary value of Version B lies in its **geometric and topological fidelity**: it guarantees machine-precision unit norm preservation ($\|x_i\|_2 = 1 \pm 2.22 \times 10^{-16}$) across arbitrary integration horizons without phase distortion, natively separates continuous joints from bounded revolute arcs, and—being analytic $C^\infty$ on $S^1$—eliminates the discontinuous `NearZero` threshold jump of `MatrixExp6`, restoring genuine $O(h^4)$ convergence under step refinement ($16.37\times$ lower energy error at $h=0.25\,\text{ms}$, and $290.8\times$ lower at $h=0.125\,\text{ms}$).
+> - **Complete Technical Report:** For the full four-way comparison tables, primitive timings, and distributions across all four formulations (including the full 4-way figure `docs/assets/benchmark_s1_comparison.png`), see **[BENCHMARK_COMPARISON.md](docs/development/BENCHMARK_COMPARISON.md)**.
 
 ---
 
@@ -162,11 +163,14 @@ Execution is entirely self-contained and requires **base MATLAB** (R2021a or lat
 m = kinova.model();
 q = [0; 0.35; -0.7; 0; 0.35; 0];
 dq = zeros(6, 1);
+ddq = zeros(6, 1);                           % Prescribed acceleration vector
 
 T = kinova.fk(q, m);                         % End-effector pose in SE(3)
 Jb = kinova.jacobian(q, m, 'body');          % Flange-body twist Jacobian
 [M, b] = kinova.dynamics(q, dq, m);          % Mass matrix and bias
-tau = kinova.inverse_dynamics(q, dq, ddq, m);% RNEA effort
+tau = kinova.inverse_dynamics(q, dq, ddq, m);% Required RNEA joint effort
+qdd = kinova.forward_dynamics(q, dq, tau, m);% Resulting joint acceleration
+[H, K, V] = kinova.energy(q, dq, m);         % Hamiltonian, kinetic, potential
 ```
 
 #### Version B: Global Manifold ($X \in (S^1)^6$)
@@ -174,11 +178,14 @@ tau = kinova.inverse_dynamics(q, dq, ddq, m);% RNEA effort
 m = kinova_s1.model();
 X = kinova_s1.from_q([0; 0.35; -0.7; 0; 0.35; 0]);  % 2-by-6 configuration matrix
 omega = zeros(6, 1);                                % Angular velocity vector
+domega = zeros(6, 1);                               % Angular acceleration vector
 
 T = kinova_s1.fk(X, m);                      % End-effector pose via Theorem 2.1
 Jb = kinova_s1.jacobian(X, m, 'body');       % Flange-body twist Jacobian
 [M, b] = kinova_s1.dynamics(X, omega, m);    % Mass matrix and bias
-tau = kinova_s1.inverse_dynamics(X, omega, domega, m);
+tau = kinova_s1.inverse_dynamics(X, omega, domega, m); % Required RNEA joint effort
+domega_out = kinova_s1.forward_dynamics(X, omega, tau, m); % Resulting acceleration
+[H, K, V] = kinova_s1.energy(X, omega, m);   % Hamiltonian, kinetic, potential
 ```
 
 ---
