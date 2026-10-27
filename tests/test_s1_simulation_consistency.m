@@ -41,14 +41,16 @@ c_fine = c;
 c_fine.substeps = 2 * c.substeps;
 log_b_fine = kinova_s1.simulate(m_b, c_fine);
 nom_energy_err_b_fine = log_b_fine.metrics.energy_balance_max_error_J;
+rk4_order_ratio_b = nom_energy_err_b / nom_energy_err_b_fine;
 
 step_q_diff = max(abs(log_b.q - log_b_fine.q), [], 'all');
 step_dq_diff = max(abs(log_b.omega - log_b_fine.omega), [], 'all');
 assert(step_q_diff < 1e-5 && step_dq_diff < 1e-4, 'kinova_s1:sim', 'Step refinement failed');
+assert(rk4_order_ratio_b > 15.0, 'kinova_s1:sim', 'Expected 4th-order O(h^4) energy convergence on (S1)^6');
 assert(log_b_fine.metrics.max_unit_norm_error < 1e-15, 'kinova_s1:sim', 'Fine step unit norm violation');
 
 % -------------------------------------------------------------------------
-% 2. Multi-Turn Winding Trajectory Simulation on Continuous Joint 1
+% 2. Multi-Turn Winding Trajectory Simulation on Continuous Joints (1, 4, 6)
 % -------------------------------------------------------------------------
 c_turn = kinova.config();
 c_turn.save_results = false;
@@ -71,8 +73,26 @@ assert(abs(log_turn_a.metrics.energy_balance_max_error_J - log_turn_b.metrics.en
     'kinova_s1:sim', 'Multi-turn energy balance parity failed');
 assert(log_turn_b.metrics.max_unit_norm_error < 1e-15, 'kinova_s1:sim', 'Multi-turn unit norm error');
 
+% 2b. Large-Lag Winding Preservation (|qref - q| > pi) vs Modular S^1 Control
+c_lag = kinova.config();
+c_lag.save_results = false;
+c_lag.motion_time = 0.04; % Fast ramp creates > pi rad tracking lag on Joint 6
+c_lag.end_time = 0.20;
+c_lag.q0 = [0; 0.35; -0.7; 0; 0.35; 0];
+c_lag.qgoal = [0; 0.35; -0.7; 0; 0.35; 1.5 * pi];
+log_lag_a = kinova.simulate(m_a, c_lag);
+log_lag_b = kinova_s1.simulate(m_b, c_lag);
+lag_q_parity = max(abs(log_lag_a.q - log_lag_b.q), [], 'all');
+assert(lag_q_parity < 1e-8, 'kinova_s1:sim', 'Winding slip occurred under > pi tracking error');
+assert(log_lag_b.q(6, end) > 0, 'kinova_s1:sim', 'Unwrapped control must advance in +theta direction');
+
+c_mod = c_lag;
+c_mod.continuous_control_mode = 'modular_s1';
+log_mod_b = kinova_s1.simulate(m_b, c_mod);
+assert(log_mod_b.q(6, end) < 0, 'kinova_s1:sim', 'Modular S^1 control must take shortest negative arc for +1.5*pi');
+
 % -------------------------------------------------------------------------
-% 3. Perturbation Testing: External Wrench, Effectiveness, Saturation
+% 3. Perturbation Testing: External Wrench (Constant & Continuous-Angle Dependent)
 % -------------------------------------------------------------------------
 c_forced = kinova.config();
 c_forced.motion_time = 0.08;
@@ -93,6 +113,20 @@ assert(forced_q_parity < 1e-8, 'kinova_s1:sim', 'Forced simulation parity failed
 assert(forced_env_work_diff < 1e-12, 'kinova_s1:sim', 'External work parity failed');
 assert(forced_energy_parity < 1e-10, 'kinova_s1:sim', 'Forced energy balance parity failed');
 assert(log_forced_b.metrics.energy_balance_max_error_J < 1e-5, 'kinova_s1:sim', 'Forced energy balance violation');
+
+% 3b. External wrench dependent on unwrapped continuous joint angle crossing pi
+c_spring = kinova.config();
+c_spring.motion_time = 0.20;
+c_spring.end_time = 0.24;
+c_spring.q0 = [0; 0.35; -0.7; 0; 0.35; 2.8];
+c_spring.qgoal = [0; 0.35; -0.7; 0; 0.35; 3.5]; % crosses pi = 3.14159...
+c_spring.save_results = false;
+c_spring.external_wrench_function = @(~, q, ~)[0; 0; -0.25 * q(6); 0; 0; 0];
+
+log_spring_a = kinova.simulate(m_a, c_spring);
+log_spring_b = kinova_s1.simulate(m_b, c_spring);
+spring_q_parity = max(abs(log_spring_a.q - log_spring_b.q), [], 'all');
+assert(spring_q_parity < 1e-8, 'kinova_s1:sim', 'Continuous-angle external wrench parity failed across pi');
 
 % -------------------------------------------------------------------------
 % 4. Saturation Clamping Parity
@@ -116,8 +150,11 @@ report = struct(...
     'nom_pos_parity_mm', nom_pos_parity_mm, ...
     'nom_energy_err_b_J', nom_energy_err_b, ...
     'fine_energy_err_b_J', nom_energy_err_b_fine, ...
+    'rk4_order_ratio_b', rk4_order_ratio_b, ...
     'turn_q_parity_rad', turn_q_parity, ...
+    'lag_q_parity_rad', lag_q_parity, ...
     'forced_q_parity_rad', forced_q_parity, ...
+    'spring_q_parity_rad', spring_q_parity, ...
     'max_unit_norm_err', max([nom_max_unit_norm_err, log_turn_b.metrics.max_unit_norm_error]), ...
     'pass', true);
 

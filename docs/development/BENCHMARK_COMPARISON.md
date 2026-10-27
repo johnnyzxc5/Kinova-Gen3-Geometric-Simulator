@@ -74,7 +74,9 @@ Simulación dinámica completa de la trayectoria quintic de 3.6 segundos con laz
 | **Tiempo de Ejecución** | **$4.70\,\text{s}$** | **$3.18\,\text{s}$** | **$3.29\,\text{s}$** |
 | **Factor de Tiempo Real** | $0.77\times$ (más lento que tiempo real) | $1.13\times$ (más rápido que tiempo real) | **$1.10\times$ (más rápido que tiempo real)** |
 | **Aceleración vs. Version A** | $1.00\times$ (base) | $1.48\times$ | **$1.43\times$** |
-| **Error Máximo de Energía** | $3.258 \times 10^{-9}\text{ J}$ | $3.258 \times 10^{-9}\text{ J}$ | **$3.258 \times 10^{-9}\text{ J}$** |
+| **Error Máximo de Energía ($h = 0.500\,\text{ms}$)** | $3.258 \times 10^{-9}\text{ J}$ | $3.258 \times 10^{-9}\text{ J}$ | **$3.258 \times 10^{-9}\text{ J}$** |
+| **Error Máximo de Energía ($h = 0.250\,\text{ms}$)** | $2.727 \times 10^{-9}\text{ J}$ (estancado por `NearZero`) | $1.666 \times 10^{-10}\text{ J}$ | **$1.666 \times 10^{-10}\text{ J}$ ($16.37\times$ más preciso)** |
+| **Error Máximo de Energía ($h = 0.125\,\text{ms}$)** | $2.727 \times 10^{-9}\text{ J}$ (estancado por `NearZero`) | $9.377 \times 10^{-12}\text{ J}$ | **$9.377 \times 10^{-12}\text{ J}$ ($290.8\times$ más preciso)** |
 | **Error Máximo de Norma en $(S^1)^6$** | — | — | **$2.22 \times 10^{-16}$** |
 | **Discrepancia de Trayectoria vs. A** | — | $< 10^{-11}\text{ rad}$ | **$5.86 \times 10^{-11}\text{ rad}$** |
 | **Discrepancia Espacial vs. A** | — | $< 1\,\mu\text{m}$ | **$0.48\,\mu\text{m}$ ($0.00048\,\text{mm}$)** |

@@ -35,13 +35,13 @@
     "max_position_error_mm": 0.22929574456953475,
     "energy_balance_max_error_J": 3.2578446607089973E-9,
     "minimum_recorded_limit_margin_rad": 1.5374530902049717,
-    "minimum_stage_limit_margin_rad": 1.5374530722223554,
+    "minimum_stage_limit_margin_rad": 1.5374530722223345,
     "maximum_stage_limit_violation_rad": 0,
     "max_stage_velocity_utilization": 0.1567135312054187,
     "max_command_utilization": 0.355902389507237,
     "saturated_joint_samples": 0,
-    "max_unit_norm_error": 2.2204460492503131E-16,
-    "elapsed_seconds": 3.3633095
+    "max_unit_norm_error": 4.4408920985006262E-16,
+    "elapsed_seconds": 3.4847094
   },
   "step_refinement": {
     "same_control_dt_s": 0.004,

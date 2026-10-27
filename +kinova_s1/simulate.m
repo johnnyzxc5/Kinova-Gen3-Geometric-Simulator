@@ -85,14 +85,23 @@ sm = m.umid(2, :)';
 
 for k = 1:N
     [Xr, dqr, ddqr, qr] = kinova_s1.reference(t(k), c, m, phase, X0, d_box);
+    q_lifted = kinova_s1.to_q(X, m, q_unwrapped);
 
     % Control computation using admissible displacement box_diff on (S1)^6
     if isempty(c.control_function)
-        err_box = kinova_s1.box_diff(Xr, X, m);
+        if isfield(c, 'continuous_control_mode') && strcmp(c.continuous_control_mode, 'modular_s1')
+            w_ctrl = zeros(n, 1);
+        else
+            % Fiber winding offset w in Z preserves multi-turn tracking even when |qr - q| > pi
+            d_geo = kinova_s1.geodesic_diff(Xr, X);
+            w_ctrl = zeros(n, 1);
+            w_ctrl(m.is_continuous) = round(((qr(m.is_continuous) - q_lifted(m.is_continuous)) ...
+                - d_geo(m.is_continuous)) / (2 * pi));
+        end
+        err_box = kinova_s1.box_diff(Xr, X, m, w_ctrl);
         virtual = ddqr + c.kp(:) .* err_box + c.kd(:) .* (dqr - omega);
         command_raw = kinova_s1.inverse_dynamics(X, omega, virtual, controller);
     else
-        q_lifted = kinova_s1.to_q(X, m, q_unwrapped);
         command_raw = kinova.joint_vector(c.control_function(t(k), q_lifted, omega, qr, dqr, ddqr, controller));
     end
 
@@ -101,12 +110,12 @@ for k = 1:N
         command = max(-m.taumax, min(m.taumax, command));
     end
 
-    [alpha, ~] = inputs(t(k), X, omega, m, c, n);
+    [alpha, ~] = inputs(t(k), X, omega, m, c, n, q_unwrapped);
     actual = alpha .* command;
 
     % Diagnostics and logging on (S1)^6 x R^6
     log.X(:, :, k) = X;
-    log.q(:, k) = kinova_s1.to_q(X, m, q_unwrapped);
+    log.q(:, k) = q_lifted;
     log.dq(:, k) = omega;
     log.omega(:, k) = omega;
     log.Xref(:, :, k) = Xr;
@@ -136,46 +145,54 @@ for k = 1:N
             tj = t(k) + (j - 1) * h;
             X1 = X;
             omega1 = omega;
+            q_stage1 = q_unwrapped;
 
             % Stage 1: at (X1, omega1)
-            [dw1, k1_w, k1_work] = mk_rhs(tj, X1, omega1, command, m, c);
+            [dw1, k1_w, k1_work] = mk_rhs(tj, X1, omega1, command, m, c, q_stage1);
 
             % Stage 2: at Exp(h/2 * dw1) * X1
             dtheta2 = (h / 2) * dw1;
             X2 = kinova_s1.exp_s1(dtheta2, X1, true);
             omega2 = omega1 + (h / 2) * k1_w;
-            [dw2, k2_w, k2_work] = mk_rhs(tj + h / 2, X2, omega2, command, m, c);
+            q_stage2 = q_stage1 + dtheta2;
+            [dw2, k2_w, k2_work] = mk_rhs(tj + h / 2, X2, omega2, command, m, c, q_stage2);
 
             % Stage 3: at Exp(h/2 * dw2) * X1
             dtheta3 = (h / 2) * dw2;
             X3 = kinova_s1.exp_s1(dtheta3, X1, true);
             omega3 = omega1 + (h / 2) * k2_w;
-            [dw3, k3_w, k3_work] = mk_rhs(tj + h / 2, X3, omega3, command, m, c);
+            q_stage3 = q_stage1 + dtheta3;
+            [dw3, k3_w, k3_work] = mk_rhs(tj + h / 2, X3, omega3, command, m, c, q_stage3);
 
             % Stage 4: at Exp(h * dw3) * X1
             dtheta4 = h * dw3;
             X4 = kinova_s1.exp_s1(dtheta4, X1, true);
             omega4 = omega1 + h * k3_w;
-            [dw4, k4_w, k4_work] = mk_rhs(tj + h, X4, omega4, command, m, c);
+            q_stage4 = q_stage1 + dtheta4;
+            [dw4, k4_w, k4_work] = mk_rhs(tj + h, X4, omega4, command, m, c, q_stage4);
 
             % Step update via Lie group exponential action
             dtheta_step = (h / 6) * (dw1 + 2 * dw2 + 2 * dw3 + dw4);
             X = kinova_s1.exp_s1(dtheta_step, X1, true);
             omega = omega1 + (h / 6) * (k1_w + 2 * k2_w + 2 * k3_w + k4_w);
             work = work + (h / 6) * (k1_work + 2 * k2_work + 2 * k3_work + k4_work);
-            q_unwrapped = q_unwrapped + dtheta_step;
+            q_unwrapped = q_stage1 + dtheta_step;
 
             if c.capture_substeps
-                % Stage monitoring for bounded joints (2, 3, 5)
-                stages_q = [q_unwrapped - dtheta_step, ...
-                            q_unwrapped - dtheta_step + (h/2)*dw1, ...
-                            q_unwrapped - dtheta_step + (h/2)*dw2, ...
-                            q_unwrapped - dtheta_step + h*dw3, ...
-                            q_unwrapped];
-                bounded_q = stages_q(m.is_bounded, :);
-                b_qmin = m.qmin(m.is_bounded);
-                b_qmax = m.qmax(m.is_bounded);
-                margins = [bounded_q - b_qmin; b_qmax - bounded_q];
+                % Intrinsic S^1 stage monitoring: unit-norm and bounded-joint arc margins (2, 3, 5)
+                C_st = [X1(1, :); X2(1, :); X3(1, :); X4(1, :); X(1, :)];
+                S_st = [X1(2, :); X2(2, :); X3(2, :); X4(2, :); X(2, :)];
+                st_norm_err = max(abs(C_st.^2 + S_st.^2 - 1), [], 'all');
+                max_unit_norm_ever = max(max_unit_norm_ever, st_norm_err);
+
+                b_idx = m.is_bounded;
+                cm_b = cm(b_idx)';
+                sm_b = sm(b_idx)';
+                qhalf_b = m.qhalf(b_idx)';
+                C_b = C_st(:, b_idx);
+                S_b = S_st(:, b_idx);
+                delta_b = atan2(S_b .* cm_b - C_b .* sm_b, C_b .* cm_b + S_b .* sm_b);
+                margins = [repmat(qhalf_b, 5, 1) + delta_b; repmat(qhalf_b, 5, 1) - delta_b];
                 stage_min_margin = min(stage_min_margin, min(margins, [], 'all'));
                 limit_violation = max(limit_violation, max(-margins, [], 'all'));
 
@@ -212,9 +229,9 @@ log.model_options = m.options;
 log.urdf_revision = m.urdf_revision;
 end
 
-function [dw, k_w, k_work] = mk_rhs(t, X, omega, command, m, c)
+function [dw, k_w, k_work] = mk_rhs(t, X, omega, command, m, c, q_stage)
 n = m.n;
-[alpha, F] = inputs(t, X, omega, m, c, n);
+[alpha, F] = inputs(t, X, omega, m, c, n, q_stage);
 [M, b] = kinova_s1.dynamics(X, omega, m);
 actual = alpha .* command;
 environment = zeros(6, 1);
@@ -228,14 +245,14 @@ k_w = domega;
 k_work = [actual' * omega; f' * omega; environment' * omega];
 end
 
-function [alpha, F] = inputs(t, X, omega, m, c, n)
+function [alpha, F] = inputs(t, X, omega, m, c, n, q_stage)
 alpha = ones(n, 1);
 F = zeros(6, 1);
 if ~isempty(c.effectiveness_function)
     alpha = kinova.joint_vector(c.effectiveness_function(t));
 end
 if ~isempty(c.external_wrench_function)
-    q_lift = kinova_s1.to_q(X, m);
+    q_lift = kinova_s1.to_q(X, m, q_stage);
     F = kinova.joint_vector(c.external_wrench_function(t, q_lift, omega));
 end
 assert(all(alpha >= 0 & alpha <= 1), 'kinova_s1:input', 'Effectiveness must be in [0,1]');
