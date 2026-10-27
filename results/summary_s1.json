@@ -41,7 +41,7 @@
     "max_command_utilization": 0.355902389507237,
     "saturated_joint_samples": 0,
     "max_unit_norm_error": 4.4408920985006262E-16,
-    "elapsed_seconds": 3.4847094
+    "elapsed_seconds": 3.3552677
   },
   "step_refinement": {
     "same_control_dt_s": 0.004,
