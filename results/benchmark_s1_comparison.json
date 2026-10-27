@@ -1,0 +1,122 @@
+{
+  "timestamp": "2026-10-27 08:20:44",
+  "matlab_version": "26.1.0.3312084 (R2026a) Update 4",
+  "n_states": 100,
+  "n_repeats": 10,
+  "seed": 1.3102026E+7,
+  "envelope": {
+    "admissible_envelope_verified": true,
+    "dq_limit_violations": 0,
+    "max_dq_utilization": 0.945929841318331,
+    "tau_limit_violations": 0,
+    "max_tau_utilization": 0.927709173631095
+  },
+  "micro_benchmarks": {
+    "fk": {
+      "stock_us": 38.2855,
+      "version_a_us": 36.1215,
+      "variant_balg_us": 12.616,
+      "version_b_us": 12.254,
+      "speedup_b_vs_stock": 3.1243267504488332,
+      "speedup_b_vs_a": 2.9477313530275828,
+      "speedup_balg_vs_a": 2.8631499682942296,
+      "overhead_b_vs_balg_pct": -2.8693722257450864
+    },
+    "frames": {
+      "stock_us": 43.35,
+      "version_a_us": 44.076,
+      "variant_balg_us": 9.506,
+      "version_b_us": 7.792,
+      "speedup_b_vs_stock": 5.563398357289528,
+      "speedup_b_vs_a": 5.656570841889117,
+      "speedup_balg_vs_a": 4.6366505365032609,
+      "overhead_b_vs_balg_pct": -18.030717441615828
+    },
+    "jacobian_space": {
+      "stock_us": 43.0405,
+      "version_a_us": 42.4885,
+      "variant_balg_us": 22.9585,
+      "version_b_us": 21.6625,
+      "speedup_b_vs_stock": 1.986866705135603,
+      "speedup_b_vs_a": 1.9613848817080208,
+      "speedup_balg_vs_a": 1.8506653309231875,
+      "overhead_b_vs_balg_pct": -5.64496809460548
+    },
+    "jacobian_body": {
+      "stock_us": 41.804,
+      "version_a_us": 83.1015,
+      "variant_balg_us": 30.476,
+      "version_b_us": 29.7065,
+      "speedup_b_vs_stock": 1.4072341070136167,
+      "speedup_b_vs_a": 2.7974180734856011,
+      "speedup_balg_vs_a": 2.72678501115632,
+      "overhead_b_vs_balg_pct": -2.5249376558603513
+    },
+    "inverse_dynamics": {
+      "stock_us": 145.73149999999998,
+      "version_a_us": 96.2835,
+      "variant_balg_us": 45.605000000000004,
+      "version_b_us": 46.974500000000006,
+      "speedup_b_vs_stock": 3.1023534045066996,
+      "speedup_b_vs_a": 2.0496971761274732,
+      "speedup_balg_vs_a": 2.1112487665826114,
+      "overhead_b_vs_balg_pct": 3.0029602017322707
+    },
+    "dynamics": {
+      "stock_us": 989.93049999999994,
+      "version_a_us": 146.305,
+      "variant_balg_us": 101.209,
+      "version_b_us": 95.662,
+      "speedup_b_vs_stock": 10.348210365662435,
+      "speedup_b_vs_a": 1.5293951621333444,
+      "speedup_balg_vs_a": 1.4455730221620606,
+      "overhead_b_vs_balg_pct": -5.4807378790423744
+    },
+    "forward_dynamics": {
+      "stock_us": 992.666,
+      "version_a_us": 146.9085,
+      "variant_balg_us": 103.22749999999999,
+      "version_b_us": 98.505500000000012,
+      "speedup_b_vs_stock": 10.077264721259219,
+      "speedup_b_vs_a": 1.4913735781250792,
+      "speedup_balg_vs_a": 1.423152745150275,
+      "overhead_b_vs_balg_pct": -4.5743624518660049
+    }
+  },
+  "conversions": {
+    "from_q_us": 0.513,
+    "to_q_us": 1.7305000000000001,
+    "exp_s1_us": 1.7355
+  },
+  "macro_simulation": {
+    "duration_s": 3.6,
+    "control_dt_s": 0.004,
+    "plant_step_s": 0.0005,
+    "total_rk4_substeps": 7200,
+    "version_a_elapsed_s": 4.6979675,
+    "variant_balg_elapsed_s": 3.17649045,
+    "version_b_elapsed_s": 3.28549955,
+    "sim_speedup_b_vs_a": 1.4299096464645689,
+    "sim_speedup_b_vs_balg": 0.96682114900913629,
+    "sim_realtime_factor_a": 0.76628882596569692,
+    "sim_realtime_factor_b": 1.0957237842263592,
+    "sim_max_q_parity_error_rad": 5.8603743819524157E-11,
+    "sim_max_pos_parity_error_mm": 0.00048183695869287484,
+    "sim_energy_err_a_J": 3.2579867692561493E-9,
+    "sim_energy_err_balg_J": 3.2581128905917467E-9,
+    "sim_energy_err_b_J": 3.2578446607089973E-9,
+    "sim_max_unit_norm_error": 2.2204460492503131E-16
+  },
+  "parity": {
+    "max_fk_err_b_vs_a": 1.6653345369377348E-15,
+    "max_fk_err_b_vs_stock": 1.6653345369377348E-15,
+    "max_js_err_b_vs_a": 9.9920072216264089E-16,
+    "max_jb_err_b_vs_a": 2.3314683517128287E-15,
+    "max_id_err_b_vs_a": 1.4210854715202004E-14,
+    "max_id_err_b_vs_stock": 1.4210854715202004E-14,
+    "max_mass_err_b_vs_a": 1.3322676295501878E-15,
+    "max_mass_err_b_vs_stock": 1.3322676295501878E-15,
+    "max_bias_err_b_vs_a": 1.4210854715202004E-14,
+    "max_fd_err_b_vs_a": 2.4158453015843406E-13
+  }
+}

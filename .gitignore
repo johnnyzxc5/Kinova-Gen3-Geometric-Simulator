@@ -9,9 +9,17 @@ codegen/
 results/*
 !results/.gitkeep
 !results/validation.json
+!results/validation_s1.json
 !results/summary.json
+!results/summary_s1.json
+!results/demo_s1.mat
 !results/simulation_inputs_validation.json
 !results/benchmark.json
+!results/benchmark_s1_comparison.json
+!results/benchmark_s1_comparison.mat
+!results/kinova_comparison_side_by_side.gif
+!results/kinova_version_a.gif
+!results/kinova_version_b.gif
 !results/kinova_preview.png
 !results/simulation_diagnostics.png
 *.pyc
